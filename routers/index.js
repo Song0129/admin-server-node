@@ -49,7 +49,7 @@ router.post('/admin/login', (req, res) => {
 });
 
 // 添加用户
-router.post('/manage/user/add', (req, res) => {
+router.post('/admin/manage/user/add', (req, res) => {
 	// 读取请求参数数据
 	const { username, password } = req.body;
 	// 处理: 判断用户是否已经存在, 如果存在, 返回提示错误的信息, 如果不存在, 保存
@@ -78,7 +78,7 @@ router.post('/manage/user/add', (req, res) => {
 });
 
 // 更新用户
-router.post('/manage/user/update', (req, res) => {
+router.post('/admin/manage/user/update', (req, res) => {
 	const user = req.body;
 	UserModel.findOneAndUpdate({ _id: user._id }, user)
 		.then(oldUser => {
@@ -93,7 +93,7 @@ router.post('/manage/user/update', (req, res) => {
 });
 
 // 删除用户
-router.post('/manage/user/delete', (req, res) => {
+router.post('/admin/manage/user/delete', (req, res) => {
 	const { userId } = req.body;
 	UserModel.deleteOne({ _id: userId }).then(doc => {
 		res.send({ status: 0 });
@@ -126,7 +126,7 @@ router.post('/manage/user/delete', (req, res) => {
 })*/
 
 // 获取所有用户列表
-router.get('/manage/user/list', (req, res) => {
+router.get('/admin/manage/user/list', (req, res) => {
 	UserModel.find({ username: { $ne: 'admin' } })
 		.then(users => {
 			RoleModel.find().then(roles => {
@@ -140,7 +140,7 @@ router.get('/manage/user/list', (req, res) => {
 });
 
 // 添加分类
-router.post('/manage/category/add', (req, res) => {
+router.post('/admin/manage/category/add', (req, res) => {
 	const { categoryName, parentId } = req.body;
 	CategoryModel.create({ name: categoryName, parentId: parentId || '0' })
 		.then(category => {
@@ -153,7 +153,7 @@ router.post('/manage/category/add', (req, res) => {
 });
 
 // 获取分类列表
-router.get('/manage/category/list', (req, res) => {
+router.get('/admin/manage/category/list', (req, res) => {
 	const parentId = req.query.parentId || '0';
 	CategoryModel.find({ parentId })
 		.then(categorys => {
@@ -166,7 +166,7 @@ router.get('/manage/category/list', (req, res) => {
 });
 
 // 更新分类名称
-router.post('/manage/category/update', (req, res) => {
+router.post('/admin/manage/category/update', (req, res) => {
 	const { categoryId, categoryName } = req.body;
 	CategoryModel.findOneAndUpdate({ _id: categoryId }, { name: categoryName })
 		.then(oldCategory => {
@@ -179,7 +179,7 @@ router.post('/manage/category/update', (req, res) => {
 });
 
 // 根据分类ID获取分类
-router.get('/manage/category/info', (req, res) => {
+router.get('/admin/manage/category/info', (req, res) => {
 	const categoryId = req.query.categoryId;
 	CategoryModel.findOne({ _id: categoryId })
 		.then(category => {
@@ -192,7 +192,7 @@ router.get('/manage/category/info', (req, res) => {
 });
 
 // 添加产品
-router.post('/manage/product/add', (req, res) => {
+router.post('/admin/manage/product/add', (req, res) => {
 	const product = req.body;
 	ProductModel.create(product)
 		.then(product => {
@@ -205,7 +205,7 @@ router.post('/manage/product/add', (req, res) => {
 });
 
 // 获取产品分页列表
-router.get('/manage/product/list', (req, res) => {
+router.get('/admin/manage/product/list', (req, res) => {
 	const { pageNum, pageSize } = req.query;
 	ProductModel.find({})
 		.then(products => {
@@ -218,7 +218,7 @@ router.get('/manage/product/list', (req, res) => {
 });
 
 // 搜索产品列表
-router.get('/manage/product/search', (req, res) => {
+router.get('/admin/manage/product/search', (req, res) => {
 	const { pageNum, pageSize, searchName, productName, productDesc } = req.query;
 	let contition = {};
 	if (productName) {
@@ -237,7 +237,7 @@ router.get('/manage/product/search', (req, res) => {
 });
 
 // 更新产品
-router.post('/manage/product/update', (req, res) => {
+router.post('/admin/manage/product/update', (req, res) => {
 	const product = req.body;
 	ProductModel.findOneAndUpdate({ _id: product._id }, product)
 		.then(oldProduct => {
@@ -250,7 +250,7 @@ router.post('/manage/product/update', (req, res) => {
 });
 
 // 更新产品状态(上架/下架)
-router.post('/manage/product/updateStatus', (req, res) => {
+router.post('/admin/manage/product/updateStatus', (req, res) => {
 	const { productId, status } = req.body;
 	ProductModel.findOneAndUpdate({ _id: productId }, { status })
 		.then(oldProduct => {
@@ -263,7 +263,7 @@ router.post('/manage/product/updateStatus', (req, res) => {
 });
 
 // 添加角色
-router.post('/manage/role/add', (req, res) => {
+router.post('/admin/manage/role/add', (req, res) => {
 	const { roleName } = req.body;
 	RoleModel.create({ name: roleName })
 		.then(role => {
@@ -276,7 +276,7 @@ router.post('/manage/role/add', (req, res) => {
 });
 
 // 获取角色列表
-router.get('/manage/role/list', (req, res) => {
+router.get('/admin/manage/role/list', (req, res) => {
 	RoleModel.find()
 		.then(roles => {
 			res.send({ status: 0, data: roles });
@@ -288,7 +288,7 @@ router.get('/manage/role/list', (req, res) => {
 });
 
 // 更新角色(设置权限)
-router.post('/manage/role/update', (req, res) => {
+router.post('/admin/manage/role/update', (req, res) => {
 	const role = req.body;
 	role.auth_time = Date.now();
 	RoleModel.findOneAndUpdate({ _id: role._id }, role)
