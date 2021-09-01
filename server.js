@@ -40,7 +40,7 @@ const fs = require('fs');
 
 // 通过mongoose连接数据库
 mongoose
-	.connect('mongodb://localhost/myAdmin', { useNewUrlParser: true })
+	.connect('mongodb://localhost:27077/myAdmin', { useNewUrlParser: true })
 	.then(() => {
 		console.log('连接数据库成功!!!');
 		// 只有当连接上数据库后才去启动服务器
