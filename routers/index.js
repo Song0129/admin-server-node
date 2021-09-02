@@ -140,7 +140,7 @@ router.get('/admin/manage/user/list', (req, res) => {
 });
 
 // 添加分类
-router.post('/manage/category/add', (req, res) => {
+router.post('/admin/manage/category/add', (req, res) => {
 	const { categoryName, parentId } = req.body;
 	CategoryModel.create({ name: categoryName, parentId: parentId || '0' })
 		.then(category => {
