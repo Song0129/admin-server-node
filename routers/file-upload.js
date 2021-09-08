@@ -56,7 +56,7 @@ module.exports = function fileUpload(router) {
 	});
 
 	// 删除图片
-	router.post('/manage/img/delete', (req, res) => {
+	router.post('/admin/manage/img/delete', (req, res) => {
 		const { name } = req.body;
 		fs.unlink(path.join(dirPath, name), err => {
 			if (err) {
