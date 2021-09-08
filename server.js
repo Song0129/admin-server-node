@@ -24,44 +24,35 @@ app.use('/', indexRouter); //
 const fs = require('fs');
 
 // 必须在路由器中间之后声明使用
-/*app.use((req, res) => {
-  fs.readFile(__dirname + '/public/index.html', (err, data)=>{
-    if(err){
-      console.log(err)
-      res.send('后台错误')
-    } else {
-      res.writeHead(200, {
-        'Content-Type': 'text/html; charset=utf-8',
-      });
-      res.end(data)
-    }
-  })
-})*/
+// app.use((req, res) => {
+// 	fs.readFile(__dirname + '/public/index.html', (err, data) => {
+// 		if (err) {
+// 			console.log(err);
+// 			res.send('后台错误');
+// 		} else {
+// 			res.writeHead(200, {
+// 				'Content-Type': 'text/html; charset=utf-8',
+// 			});
+// 			res.end(data);
+// 		}
+// 	});
+// });
+const a = (req, res) => {
+	console.log(req, res);
+};
+
+app.use(a);
 
 // 通过mongoose连接数据库
 mongoose
-	.connect('mongodb://localhost:27077/myAdmin', { useNewUrlParser: true })
+	.connect('mongodb://106.15.231.186:27077/myAdmin', { useNewUrlParser: true })
 	.then(() => {
 		console.log('连接数据库成功!!!');
 		// 只有当连接上数据库后才去启动服务器
-		app.listen('6666', () => {
-			console.log('服务器启动成功, 请访问: http://localhost:5000');
+		app.listen('7777', () => {
+			console.log('服务器启动成功, 请访问: http://localhost:7777');
 		});
 	})
 	.catch(error => {
 		console.error('连接数据库失败', error);
 	});
-
-app.all('*', function (req, res, next) {
-	if (req.headers.origin.toLowerCase() == 'https://react.only0129.top' || req.headers.origin.toLowerCase() == 'http://localhost') {
-		//设置允许跨域的域名，*代表允许任意域名跨域
-		res.header('Access-Control-Allow-Origin', req.headers.origin);
-	}
-	//允许的header类型
-	res.header('Access-Control-Allow-Headers', 'content-type');
-	//跨域允许的请求方式
-	res.header('Access-Control-Allow-Methods', 'DELETE,PUT,POST,GET,OPTIONS');
-	if (req.method.toLowerCase() == 'options') res.send(200);
-	//让options尝试请求快速结束
-	else next();
-});
